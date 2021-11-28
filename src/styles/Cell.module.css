@@ -1,0 +1,34 @@
+.sizing {
+    background-color: rgba(0, 0, 255, 0.2);
+    margin-left: 0.5em;
+    border-radius: 0.5em;
+    height: 6em;
+    width: 5 vw;
+    margin-bottom: 1em;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.active {
+    background-color: rgba(0, 0, 255, 0.6);
+}
+
+.text {
+    font-size: 14px;
+    text-align: center;
+    padding: 1em;
+}
+
+@media only screen and (max-width: 1200px) {
+    .sizing {
+        width: 5 vw;
+        height: 4em;
+    }
+
+    .text {
+        font-size: 10px;
+        padding: 0.1em;
+    }
+  }

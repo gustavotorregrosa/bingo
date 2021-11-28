@@ -5,9 +5,30 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image:url("./assets/background.jpg"); 
+  background-repeat: no-repeat;
+  background-position: center top; 
+  background-size: cover;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.only_mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  body {
+    background-image:url("./assets/background-mobile.jpg"); 
+    background-repeat: repeat;
+  }
+
+  .only_mobile {
+    display: block;
+  }
 }
