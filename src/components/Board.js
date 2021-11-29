@@ -19,13 +19,13 @@ export default function Board() {
 
     const excusesService = new ExcusesService()
     const [excuses, setExcuses] = useState(excusesService.getExcuses())
-    const [isBingo, setBingo] = useState(false)
+    // const [isBingo, setBingo] = useState(false)
 
     const toggleExcuse = id => {
 
-        if(isBingo){
-            return
-        }
+        // if(isBingo){
+        //     return
+        // }
 
         let newExcuses = []
         excuses.map(excuseLine => {
@@ -44,30 +44,32 @@ export default function Board() {
         })
 
         setExcuses(newExcuses)
-        checkWinner(newExcuses)
+        checkWinner(newExcuses, id)
     }
 
-    const checkWinner = excuses => {
-        if(checkWinnerHorizontal(excuses) || checkWinnerVerticalAndDiagonal(excuses)){
+    const checkWinner = (excuses, id) => {
+        if(checkWinnerHorizontal(excuses, id) || checkWinnerVerticalAndDiagonal(excuses, id)){
             callConfetti()
-            setBingo(true)
-            setTimeout(() => {
-                window.location.href = "/"
-            }, 4000)
+            // setBingo(true)
+            // setTimeout(() => {
+            //     window.location.href = "/"
+            // }, 4000)
         }
 
 
     }
 
-    const checkWinnerHorizontal = excuses => {
+    const checkWinnerHorizontal = (excuses, id) => {
         let isWinnerHorizontal = false
         excuses.map((excuseLine, lineNumber) => {  
             let lineCompleted = true
+            let isCurrentClick = false
             excuseLine.map((excuse, colNumber) => {
                 lineCompleted = lineCompleted && excuse.flag
+                isCurrentClick = isCurrentClick || excuse.id == id
             })
             
-            if(lineCompleted){
+            if(lineCompleted & isCurrentClick){
                 isWinnerHorizontal = true
                 return
             }
@@ -76,29 +78,38 @@ export default function Board() {
         return isWinnerHorizontal
     }
 
-    const checkWinnerVerticalAndDiagonal = excuses => {
+    const checkWinnerVerticalAndDiagonal = (excuses, id) => {
         let isVerticalWinner = false
         const diagonalOne = []
         const diagonalTwo = []
+        let isCurrentClickDiagonalOne = false
+        let isCurrentClickDiagonalTwo = false
         for (let col = 0; col < excuses[0].length; col++) {
             let colWinner = true
+            let isCurrentClickVertical = false
+
             for(let line = 0; line < excuses.length; line++){
+                isCurrentClickVertical = isCurrentClickVertical || excuses[line][col].id == id
                 colWinner = colWinner && excuses[line][col].flag
+                
                 if(line == col){
                     diagonalOne.push(excuses[line][col].flag)
+                    isCurrentClickDiagonalOne = isCurrentClickDiagonalOne || excuses[line][col].id == id
                 }
+
                 if(line + col == excuses.length -1){
                     diagonalTwo.push(excuses[line][col].flag)
+                    isCurrentClickDiagonalTwo = isCurrentClickDiagonalTwo || excuses[line][col].id == id
                 }
             }
 
-            if(colWinner){
+            if(colWinner && isCurrentClickVertical){
                 isVerticalWinner = true
                 break
             }
         }
 
-        let isDiagonalWinner = !diagonalOne.includes(false) || !diagonalTwo.includes(false)
+        let isDiagonalWinner = (!diagonalOne.includes(false) && isCurrentClickDiagonalOne ) || (!diagonalTwo.includes(false) && isCurrentClickDiagonalTwo) 
 
         return isVerticalWinner || isDiagonalWinner
     }
