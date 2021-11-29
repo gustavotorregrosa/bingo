@@ -19,8 +19,14 @@ export default function Board() {
 
     const excusesService = new ExcusesService()
     const [excuses, setExcuses] = useState(excusesService.getExcuses())
+    const [isBingo, setBingo] = useState(false)
 
     const toggleExcuse = id => {
+
+        if(isBingo){
+            return
+        }
+
         let newExcuses = []
         excuses.map(excuseLine => {
             let newExcuseLine = []
@@ -44,6 +50,10 @@ export default function Board() {
     const checkWinner = excuses => {
         if(checkWinnerHorizontal(excuses) || checkWinnerVerticalAndDiagonal(excuses)){
             callConfetti()
+            setBingo(true)
+            setTimeout(() => {
+                window.location.href = "/"
+            }, 4000)
         }
 
 
